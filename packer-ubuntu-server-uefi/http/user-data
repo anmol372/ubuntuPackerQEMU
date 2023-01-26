@@ -1,0 +1,79 @@
+#cloud-config
+autoinstall:
+  version: 1
+  locale: en_US
+  keyboard:
+    layout: us
+  ssh:
+    install-server: true
+    allow-pw: true
+  packages:
+    - qemu-guest-agent
+  late-commands:
+    - "sudo apt update && sudo apt install -y efibootmgr"
+    - "sudo efibootmgr"
+    - "sudo efibootmgr -o 0007,0001,0000,0002,0003,0004,0005,0006"
+  user-data:
+    preserve_hostname: false
+    hostname: packerubuntu
+    package_upgrade: true
+    timezone: Europe/Berlin
+    chpasswd:
+      expire: true
+      list:
+        - user1:packerubuntu
+    users:
+      - name: admin
+        passwd: $6$xyz$74AlwKA3Z5n2L6ujMzm/zQXHCluA4SRc2mBfO2/O5uUc2yM2n2tnbBMi/IVRLJuKwfjrLZjAT7agVfiK7arSy/
+        groups: [adm, cdrom, dip, plugdev, lxd, sudo]
+        lock-passwd: false
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        shell: /bin/bash
+      - name: user1
+        plain-txt-passwd: packerubuntu
+        lock-passwd: false
+        shell: /bin/bash
+#cloud-config
+vars:
+  http_proxy: http://proxy.esl.cisco.com:80
+  https_proxy: http://proxy.esl.cisco.com:80
+  no_proxy: localhost,127.0.0.1,172.28.184.8,172.28.184.14,172.28.184.18,172.28.184.140,10.30.120.20,172.28.184.12,172.28.184.145,172.28.184.146,172.28.184.147,172.28.184.148,172.28.184.149,fab14-compute-1.noiro.lab,fab14-compute-2.noiro.lab,fab14-compute-3.noiro.lab,fab14-compute-4.noiro.lab,fab14-compute-5.noiro.lab,fab14-compute-1,fab14-compute-2,fab14-compute-3,fab14-compute-4,fab14-compute-5,1.100.101.11,1.100.101.12,1.100.101.13,1.100.101.14,1.100.101.15,172.28.184.12,engci-jenkins-sjc.cisco.com,10.96.0.0/12,10.2.80.1/21
+  user: packerubuntu
+#cloud-config
+write_files:
+- path: /etc/environment
+  content: |
+    http_proxy={{ http_proxy }}
+    https_proxy={{ https_proxy }}
+    no_proxy={{ no_proxy }}
+- path: /home/{{ user }}/.docker/config.json
+  content: |
+    {
+        "proxies":
+        {
+            "default":
+            {
+              "http_proxy"="{{ http_proxy }}",
+              "https_proxy"="{{ https_proxy }}",
+              "no_proxy"="{{ no_proxy }}"
+            }
+        }
+    }
+  owner: {{ user }}
+  mode: 0600
+runcmd:
+- sudo -E systemctl restart docker
+#cloud-config
+runcmd:
+  - echo "export REPO=https://github.com/networkoperator/demo-cluster-manifests.git" >> /etc/environment
+  - echo "export DIR=demo-cluster-manifests" >> /etc/environment
+  - echo "export BRANCH=anmol-test" >> /etc/environment
+  - echo "export GIT_PAT=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" >> /etc/environment
+  - echo "export GIT_USER=networkoperator-gittest" >> /etc/environment
+  - echo "export GIT_EMAIL=test@cisco.com" >> /etc/environment
+  - echo "export SYSTEMID=anmol123" >> /etc/environment
+  - echo "export HTTP_PROXY=$http_proxy" >> /etc/environment
+  - echo "export HTTPS_PROXY=$https_proxy" >> /etc/environment
+  - echo "export NI_PROXY=$no_proxy" >> /etc/environment
+#- echo "export " >> /etc/environment
+

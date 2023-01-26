@@ -1,0 +1,156 @@
+2023/01/23 11:37:24 [INFO] Packer version: 1.8.5 [go1.18.9 darwin amd64]
+2023/01/23 11:37:24 [TRACE] discovering plugins in /usr/local/bin
+2023/01/23 11:37:24 [TRACE] discovering plugins in /Users/anmrasto/.config/packer/plugins
+2023/01/23 11:37:24 [TRACE] discovering plugins in .
+2023/01/23 11:37:24 [INFO] PACKER_CONFIG env var not set; checking the default config file path
+2023/01/23 11:37:24 [INFO] PACKER_CONFIG env var set; attempting to open config file: /Users/anmrasto/.packerconfig
+2023/01/23 11:37:24 [WARN] Config file doesn't exist: /Users/anmrasto/.packerconfig
+2023/01/23 11:37:24 [INFO] Setting cache directory: /Users/anmrasto/.cache/packer
+2023/01/23 11:37:24 [TRACE] validateValue: not active for ubuntu_version, so skipping
+2023/01/23 11:37:24 [TRACE] validateValue: not active for ubuntu_iso_file, so skipping
+2023/01/23 11:37:24 [TRACE] validateValue: not active for vm_template_name, so skipping
+2023/01/23 11:37:24 [TRACE] Starting internal plugin packer-builder-qemu
+2023/01/23 11:37:24 Starting plugin: /usr/local/bin/packer []string{"/usr/local/bin/packer", "plugin", "packer-builder-qemu"}
+2023/01/23 11:37:24 Waiting for RPC address for: /usr/local/bin/packer
+2023/01/23 11:37:24 packer-builder-qemu plugin: [INFO] Packer version: 1.8.5 [go1.18.9 darwin amd64]
+2023/01/23 11:37:24 packer-builder-qemu plugin: [INFO] PACKER_CONFIG env var not set; checking the default config file path
+2023/01/23 11:37:24 packer-builder-qemu plugin: [INFO] PACKER_CONFIG env var set; attempting to open config file: /Users/anmrasto/.packerconfig
+2023/01/23 11:37:24 packer-builder-qemu plugin: [WARN] Config file doesn't exist: /Users/anmrasto/.packerconfig
+2023/01/23 11:37:24 packer-builder-qemu plugin: [INFO] Setting cache directory: /Users/anmrasto/.cache/packer
+2023/01/23 11:37:24 packer-builder-qemu plugin: args: []string{"packer-builder-qemu"}
+2023/01/23 11:37:24 packer-builder-qemu plugin: Plugin address: unix /var/folders/1c/7fm254z12sj2x6hh8vm787vh0000gn/T/packer-plugin1567614700
+2023/01/23 11:37:24 packer-builder-qemu plugin: Waiting for connection...
+2023/01/23 11:37:24 Received unix RPC address for /usr/local/bin/packer: addr is /var/folders/1c/7fm254z12sj2x6hh8vm787vh0000gn/T/packer-plugin1567614700
+2023/01/23 11:37:24 packer-builder-qemu plugin: Serving a plugin connection...
+2023/01/23 11:37:24 packer-builder-qemu plugin: use specified accelerator: kvm
+2023/01/23 11:37:24 [TRACE] Starting internal plugin packer-provisioner-file
+2023/01/23 11:37:24 Starting plugin: /usr/local/bin/packer []string{"/usr/local/bin/packer", "plugin", "packer-provisioner-file"}
+2023/01/23 11:37:24 Waiting for RPC address for: /usr/local/bin/packer
+2023/01/23 11:37:24 packer-provisioner-file plugin: [INFO] Packer version: 1.8.5 [go1.18.9 darwin amd64]
+2023/01/23 11:37:24 packer-provisioner-file plugin: [INFO] PACKER_CONFIG env var not set; checking the default config file path
+2023/01/23 11:37:24 packer-provisioner-file plugin: [INFO] PACKER_CONFIG env var set; attempting to open config file: /Users/anmrasto/.packerconfig
+2023/01/23 11:37:24 packer-provisioner-file plugin: [WARN] Config file doesn't exist: /Users/anmrasto/.packerconfig
+2023/01/23 11:37:24 packer-provisioner-file plugin: [INFO] Setting cache directory: /Users/anmrasto/.cache/packer
+2023/01/23 11:37:24 packer-provisioner-file plugin: args: []string{"packer-provisioner-file"}
+2023/01/23 11:37:24 packer-provisioner-file plugin: Plugin address: unix /var/folders/1c/7fm254z12sj2x6hh8vm787vh0000gn/T/packer-plugin357772004
+2023/01/23 11:37:24 Received unix RPC address for /usr/local/bin/packer: addr is /var/folders/1c/7fm254z12sj2x6hh8vm787vh0000gn/T/packer-plugin357772004
+2023/01/23 11:37:24 packer-provisioner-file plugin: Waiting for connection...
+2023/01/23 11:37:24 packer-provisioner-file plugin: Serving a plugin connection...
+2023/01/23 11:37:24 [TRACE] Starting internal plugin packer-provisioner-shell
+2023/01/23 11:37:24 Starting plugin: /usr/local/bin/packer []string{"/usr/local/bin/packer", "plugin", "packer-provisioner-shell"}
+2023/01/23 11:37:24 Waiting for RPC address for: /usr/local/bin/packer
+2023/01/23 11:37:24 packer-provisioner-shell plugin: [INFO] Packer version: 1.8.5 [go1.18.9 darwin amd64]
+2023/01/23 11:37:24 packer-provisioner-shell plugin: [INFO] PACKER_CONFIG env var not set; checking the default config file path
+2023/01/23 11:37:24 packer-provisioner-shell plugin: [INFO] PACKER_CONFIG env var set; attempting to open config file: /Users/anmrasto/.packerconfig
+2023/01/23 11:37:24 packer-provisioner-shell plugin: [WARN] Config file doesn't exist: /Users/anmrasto/.packerconfig
+2023/01/23 11:37:24 packer-provisioner-shell plugin: [INFO] Setting cache directory: /Users/anmrasto/.cache/packer
+2023/01/23 11:37:24 packer-provisioner-shell plugin: args: []string{"packer-provisioner-shell"}
+2023/01/23 11:37:24 Received unix RPC address for /usr/local/bin/packer: addr is /var/folders/1c/7fm254z12sj2x6hh8vm787vh0000gn/T/packer-plugin446046315
+2023/01/23 11:37:24 packer-provisioner-shell plugin: Plugin address: unix /var/folders/1c/7fm254z12sj2x6hh8vm787vh0000gn/T/packer-plugin446046315
+2023/01/23 11:37:24 packer-provisioner-shell plugin: Waiting for connection...
+2023/01/23 11:37:24 packer-provisioner-shell plugin: Serving a plugin connection...
+2023/01/23 11:37:24 [TRACE] Starting internal plugin packer-post-processor-checksum
+2023/01/23 11:37:24 Starting plugin: /usr/local/bin/packer []string{"/usr/local/bin/packer", "plugin", "packer-post-processor-checksum"}
+2023/01/23 11:37:24 Waiting for RPC address for: /usr/local/bin/packer
+2023/01/23 11:37:24 packer-post-processor-checksum plugin: [INFO] Packer version: 1.8.5 [go1.18.9 darwin amd64]
+2023/01/23 11:37:24 packer-post-processor-checksum plugin: [INFO] PACKER_CONFIG env var not set; checking the default config file path
+2023/01/23 11:37:24 packer-post-processor-checksum plugin: [INFO] PACKER_CONFIG env var set; attempting to open config file: /Users/anmrasto/.packerconfig
+2023/01/23 11:37:24 packer-post-processor-checksum plugin: [WARN] Config file doesn't exist: /Users/anmrasto/.packerconfig
+2023/01/23 11:37:24 packer-post-processor-checksum plugin: [INFO] Setting cache directory: /Users/anmrasto/.cache/packer
+2023/01/23 11:37:24 packer-post-processor-checksum plugin: args: []string{"packer-post-processor-checksum"}
+2023/01/23 11:37:24 Received unix RPC address for /usr/local/bin/packer: addr is /var/folders/1c/7fm254z12sj2x6hh8vm787vh0000gn/T/packer-plugin508446450
+2023/01/23 11:37:24 packer-post-processor-checksum plugin: Plugin address: unix /var/folders/1c/7fm254z12sj2x6hh8vm787vh0000gn/T/packer-plugin508446450
+2023/01/23 11:37:24 packer-post-processor-checksum plugin: Waiting for connection...
+2023/01/23 11:37:24 packer-post-processor-checksum plugin: Serving a plugin connection...
+2023/01/23 11:37:24 ui: Debug mode enabled. Builds will not be parallelized.
+2023/01/23 11:37:24 ui: [1;32mcustom_build.qemu.custom_image: output will be in this color.[0m
+2023/01/23 11:37:24 ui: 
+2023/01/23 11:37:24 Build debug mode: true
+2023/01/23 11:37:24 Force build: true
+2023/01/23 11:37:24 On error: 
+2023/01/23 11:37:24 Debug enabled, so waiting for build to finish: custom_build.qemu.custom_image
+2023/01/23 11:37:24 Starting build run: custom_build.qemu.custom_image
+2023/01/23 11:37:24 Running builder: 
+2023/01/23 11:37:24 [INFO] (telemetry) Starting builder qemu.custom_image
+2023/01/23 11:37:24 packer-builder-qemu plugin: Qemu path: /usr/local/bin/qemu-system-x86_64, Qemu Image path: /usr/local/bin/qemu-img
+2023/01/23 11:37:24 ui: [1;32m==> custom_build.qemu.custom_image: Retrieving ISO[0m
+2023/01/23 11:37:24 ui: [1;32m==> custom_build.qemu.custom_image: Trying ../iso/ubuntu-22.04.1-live-server-amd64.iso[0m
+2023/01/23 11:37:24 packer-builder-qemu plugin: Acquiring lock for: ../iso/ubuntu-22.04.1-live-server-amd64.iso?checksum=sha256%3A10f19c5b2b8d6db711582e0e27f5116296c34fe4b313ba45f9b201a5007056cb (/Users/anmrasto/.cache/packer/281aa9855752339063385b35198e73db74cd61ba.iso.lock)
+2023/01/23 11:37:24 ui: [1;32m==> custom_build.qemu.custom_image: Trying ../iso/ubuntu-22.04.1-live-server-amd64.iso?checksum=sha256%3A10f19c5b2b8d6db711582e0e27f5116296c34fe4b313ba45f9b201a5007056cb[0m
+2023/01/23 11:37:28 ui: [1;32m==> custom_build.qemu.custom_image: ../iso/ubuntu-22.04.1-live-server-amd64.iso?checksum=sha256%3A10f19c5b2b8d6db711582e0e27f5116296c34fe4b313ba45f9b201a5007056cb => /Users/anmrasto/sumit/iso/ubuntu-22.04.1-live-server-amd64.iso[0m
+2023/01/23 11:37:28 packer-builder-qemu plugin: Leaving retrieve loop for ISO
+2023/01/23 11:37:28 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing after run of step 'StepDownload'. Press enter to continue.[0m
+2023/01/23 11:37:35 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing after run of step 'stepPrepareOutputDir'. Press enter to continue.[0m
+2023/01/23 11:37:37 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing after run of step 'stepCreatevTPM'. Press enter to continue.[0m
+2023/01/23 11:37:38 packer-builder-qemu plugin: No floppy files specified. Floppy disk will not be made.
+2023/01/23 11:37:38 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing after run of step 'StepCreateFloppy'. Press enter to continue.[0m
+2023/01/23 11:37:39 packer-builder-qemu plugin: No CD files specified. CD disk will not be made.
+2023/01/23 11:37:39 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing after run of step 'StepCreateCD'. Press enter to continue.[0m
+2023/01/23 11:37:39 packer-builder-qemu plugin: [INFO] Creating disk with Path: output/ckoctrl-22.04.1/ckoctrl-22.04.1 and Size: 30G
+2023/01/23 11:37:39 packer-builder-qemu plugin: Executing qemu-img: []string{"create", "-f", "qcow2", "output/ckoctrl-22.04.1/ckoctrl-22.04.1", "30G"}
+2023/01/23 11:37:40 packer-builder-qemu plugin: stdout: Formatting 'output/ckoctrl-22.04.1/ckoctrl-22.04.1', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib size=32212254720 lazy_refcounts=off refcount_bits=16
+2023/01/23 11:37:40 packer-builder-qemu plugin: stderr:
+2023/01/23 11:37:40 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing after run of step 'stepCreateDisk'. Press enter to continue.[0m
+2023/01/23 11:37:40 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing after run of step 'stepCopyDisk'. Press enter to continue.[0m
+2023/01/23 11:37:44 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing after run of step 'stepResizeDisk'. Press enter to continue.[0m
+2023/01/23 11:37:44 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing after run of step 'stepHTTPIPDiscover'. Press enter to continue.[0m
+2023/01/23 11:37:45 packer-builder-qemu plugin: Found available port: 8425 on IP: 0.0.0.0
+2023/01/23 11:37:45 ui: [1;32m==> custom_build.qemu.custom_image: Starting HTTP server on port 8425[0m
+2023/01/23 11:37:45 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing after run of step 'StepHTTPServer'. Press enter to continue.[0m
+2023/01/23 11:37:48 packer-builder-qemu plugin: Looking for available communicator (SSH, WinRM, etc) port between 2222 and 4444
+2023/01/23 11:37:48 packer-builder-qemu plugin: Found available port: 2867 on IP: 127.0.0.1
+2023/01/23 11:37:48 ui: [1;32m==> custom_build.qemu.custom_image: Found port for communicator (SSH, WinRM, etc): 2867.[0m
+2023/01/23 11:37:48 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing after run of step 'stepPortForward'. Press enter to continue.[0m
+2023/01/23 11:37:50 ui: [1;32m==> custom_build.qemu.custom_image: Looking for available port between 5900 and 6000 on 127.0.0.1[0m
+2023/01/23 11:37:50 packer-builder-qemu plugin: Looking for available port between 5900 and 6000 on 127.0.0.1
+2023/01/23 11:37:50 packer-builder-qemu plugin: Found available port: 5967 on IP: 127.0.0.1
+2023/01/23 11:37:50 packer-builder-qemu plugin: Found available VNC port: 5967 on IP: 127.0.0.1
+2023/01/23 11:37:50 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing after run of step 'stepConfigureVNC'. Press enter to continue.[0m
+2023/01/23 11:37:52 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing after run of step 'stepPrepareEfivars'. Press enter to continue.[0m
+2023/01/23 11:37:53 packer-builder-qemu plugin: Qemu --version output: QEMU emulator version 7.2.0
+2023/01/23 11:37:53 packer-builder-qemu plugin: Copyright (c) 2003-2022 Fabrice Bellard and the QEMU Project developers
+2023/01/23 11:37:53 packer-builder-qemu plugin: Qemu version: 7.2.0
+2023/01/23 11:37:53 ui: [1;32m==> custom_build.qemu.custom_image: Starting VM, booting from CD-ROM[0m
+2023/01/23 11:37:53 ui: [0;32m    custom_build.qemu.custom_image: The VM will be run headless, without a GUI. If you want to
+    custom_build.qemu.custom_image: view the screen of the VM, connect via VNC without a password to
+    custom_build.qemu.custom_image: vnc://127.0.0.1:5967[0m
+2023/01/23 11:37:53 packer-builder-qemu plugin: Qemu Builder has no floppy files, not attaching a floppy.
+2023/01/23 11:37:53 ui: [1;32m==> custom_build.qemu.custom_image: Overriding default Qemu arguments with qemuargs template option...[0m
+2023/01/23 11:37:53 packer-builder-qemu plugin: Executing /usr/local/bin/qemu-system-x86_64: []string{"-bios", "/usr/share/OVMF/OVMF_CODE.fd", "-m", "4096M", "-name", "ckoctrl-22.04.1", "-netdev", "user,id=user.0,hostfwd=tcp::2867-:22", "-drive", "file=output/ckoctrl-22.04.1/ckoctrl-22.04.1,if=virtio,cache=writeback,discard=ignore,format=qcow2", "-drive", "file=/Users/anmrasto/sumit/iso/ubuntu-22.04.1-live-server-amd64.iso,media=cdrom", "-boot", "once=d", "-machine", "type=pc,accel=kvm", "-vnc", "127.0.0.1:67", "-smp", "4", "-device", "virtio-net,netdev=user.0"}
+2023/01/23 11:37:53 packer-builder-qemu plugin: Started Qemu. Pid: 45326
+2023/01/23 11:37:53 packer-builder-qemu plugin: Qemu stderr: qemu-system-x86_64: invalid accelerator kvm
+2023/01/23 11:37:53 ui error: [1;31m==> custom_build.qemu.custom_image: Error launching VM: Qemu failed to start. Please run with PACKER_LOG=1 to get more info.[0m
+2023/01/23 11:37:53 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing before cleanup of step 'stepPrepareEfivars'. Press enter to continue.[0m
+2023/01/23 11:37:57 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing before cleanup of step 'stepConfigureVNC'. Press enter to continue.[0m
+2023/01/23 11:37:58 packer-builder-qemu plugin: failed to unlock port lockfile: close tcp 127.0.0.1:5967: use of closed network connection
+2023/01/23 11:37:58 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing before cleanup of step 'stepPortForward'. Press enter to continue.[0m
+2023/01/23 11:37:58 packer-builder-qemu plugin: failed to unlock port lockfile: close tcp 127.0.0.1:2867: use of closed network connection
+2023/01/23 11:37:58 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing before cleanup of step 'StepHTTPServer'. Press enter to continue.[0m
+2023/01/23 11:37:59 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing before cleanup of step 'stepHTTPIPDiscover'. Press enter to continue.[0m
+2023/01/23 11:37:59 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing before cleanup of step 'stepResizeDisk'. Press enter to continue.[0m
+2023/01/23 11:38:00 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing before cleanup of step 'stepCopyDisk'. Press enter to continue.[0m
+2023/01/23 11:38:00 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing before cleanup of step 'stepCreateDisk'. Press enter to continue.[0m
+2023/01/23 11:38:00 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing before cleanup of step 'StepCreateCD'. Press enter to continue.[0m
+2023/01/23 11:38:01 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing before cleanup of step 'StepCreateFloppy'. Press enter to continue.[0m
+2023/01/23 11:38:01 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing before cleanup of step 'stepCreatevTPM'. Press enter to continue.[0m
+2023/01/23 11:38:01 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing before cleanup of step 'stepPrepareOutputDir'. Press enter to continue.[0m
+2023/01/23 11:38:01 ui: [1;32m==> custom_build.qemu.custom_image: Deleting output directory...[0m
+2023/01/23 11:38:01 ui: ask: [1;32m==> custom_build.qemu.custom_image: Pausing before cleanup of step 'StepDownload'. Press enter to continue.[0m
+2023/01/23 11:38:02 [INFO] (telemetry) ending qemu.custom_image
+2023/01/23 11:38:02 ui error: [1;31mBuild 'custom_build.qemu.custom_image' errored after 37 seconds 265 milliseconds: Build was halted.[0m
+2023/01/23 11:38:02 Waiting on builds to complete...
+2023/01/23 11:38:02 ui: 
+==> Wait completed after 37 seconds 265 milliseconds
+2023/01/23 11:38:02 machine readable: error-count []string{"1"}
+2023/01/23 11:38:02 ui error: 
+==> Some builds didn't complete successfully and had errors:
+2023/01/23 11:38:02 machine readable: custom_build.qemu.custom_image,error []string{"Build was halted."}
+2023/01/23 11:38:02 ui error: --> custom_build.qemu.custom_image: Build was halted.
+2023/01/23 11:38:02 ui: 
+==> Builds finished but no artifacts were created.
+2023/01/23 11:38:02 [INFO] (telemetry) Finalizing.
+2023/01/23 11:38:02 waiting for all plugin processes to complete...
+2023/01/23 11:38:02 /usr/local/bin/packer: plugin process exited
+2023/01/23 11:38:02 /usr/local/bin/packer: plugin process exited
+2023/01/23 11:38:02 /usr/local/bin/packer: plugin process exited
+2023/01/23 11:38:02 /usr/local/bin/packer: plugin process exited
