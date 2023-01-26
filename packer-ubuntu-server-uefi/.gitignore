@@ -8,3 +8,5 @@ crash.log
 *.box
 
 prepImgChart/cko_resources/*.tgz
+
+outpu*

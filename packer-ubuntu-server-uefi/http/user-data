@@ -59,16 +59,15 @@ write_files:
             }
         }
     }
-  owner: {{ user }}
-  mode: 0600
+  permissions: '0600'
 runcmd:
 - sudo -E systemctl restart docker
 #cloud-config
 runcmd:
-  - echo "export REPO=https://github.com/networkoperator/demo-cluster-manifests.git" >> /etc/environment
+  - echo "export REPO=<REPO>" >> /etc/environment
   - echo "export DIR=demo-cluster-manifests" >> /etc/environment
   - echo "export BRANCH=anmol-test" >> /etc/environment
-  - echo "export GIT_PAT=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" >> /etc/environment
+  - echo "export GIT_PAT=<PAT>" >> /etc/environment
   - echo "export GIT_USER=networkoperator-gittest" >> /etc/environment
   - echo "export GIT_EMAIL=test@cisco.com" >> /etc/environment
   - echo "export SYSTEMID=anmol123" >> /etc/environment
