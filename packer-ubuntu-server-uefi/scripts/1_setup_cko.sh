@@ -13,8 +13,8 @@ source 11_launch_chart.sh /tmp/resources/cert-manager-v1.11.0.tgz cko-jetstack-c
 # create ns
 kubectl create ns netop-manager
 
-# create secrets
-source 12_create_secrets.sh
+# create ns
+kubectl create ns netop-manager
 
 #TODO: load helm template with correct values.yaml for netop-org-manager
 # Create cko

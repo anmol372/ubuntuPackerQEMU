@@ -5,28 +5,11 @@ set -xe
 DEBIAN_FRONTEND=noninteractive
 
 # Set proxy
-echo "Setting proxy"
+echo "Checking if proxy is set"
 export http_proxy=http://proxy.esl.cisco.com:80
 export https_proxy=http://proxy.esl.cisco.com:80
 
 echo "Successfully update Ubuntu packages"
-
-# Update netplan
-echo "Change interface name to enp1s0 in netplan config to facilitate dhcp ..."
-sudo -E cp /etc/netplan/00-installer-config.yaml /etc/netplan/00-installer-config.yaml.bak
-if [ $? -ne 0 ]; then
-  echo "Error: Failed to make backup of the current configuration file."
-  exit 1
-fi
-
-# Replace ens3 with enp1s0 in the configuration file
-sudo -E sed -i 's/ens3/enp1s0/g' /etc/netplan/00-installer-config.yaml
-if [ $? -ne 0 ]; then
-  echo "Error: Failed to update the configuration file."
-  exit 1
-fi
-
-echo "Done"
 
 # Update packages
 echo "Update Ubuntu ..."
@@ -95,13 +78,16 @@ if ! sudo -E apt-get install -y docker-ce docker-ce-cli containerd.io; then
     exit 1
 fi
 
+if check_proxy_vars; then
+  set_docker_config
+fi
+
 rm -f /etc/containerd/config.toml
+sudo -E systemctl daemon-reload
 sudo -E systemctl restart containerd
+sudo -E systemctl restart docker
 
 echo "Done"
-
-# Step 4: Configure docker for kubeadm
-echo "Configuring docker for kubeadm"
 
 # Configure docker to use overlay2 storage and systemd
 if ! sudo -E mkdir -p /etc/docker; then
@@ -140,19 +126,6 @@ if ! sudo -E usermod -aG docker $USER; then
 fi
 
 echo "Done"
-
-# Download cri-dockerd
-#if ! curl -sSLo cri-dockerd_0.2.3.3-0.ubuntu-focal_amd64.deb \
-# https://github.com/Mirantis/cri-dockerd/releases/download/v0.2.3/cri-dockerd_0.2.3.3-0.ubuntu-focal_amd64.deb; then
-#    echo "Error: Failed to add cri-dockerd deb"
-#    exit 1
-#fi
-
-# Install cri-dockerd for Kubernetes 1.24 support
-#if ! sudo -E dpkg -i cri-dockerd_0.2.3.3-0.ubuntu-focal_amd64.deb; then
-#    echo "Error: Failed to add cri-dockered"
-#    exit 1
-#fi
 
 # Step 5: Install kubeadm, kubelet & kubectl
 echo "Installing kubeadm, kubelet & kubectl"
@@ -213,8 +186,8 @@ echo "Done"
 # Step 7: Create the cluster with kubeadm
 echo "Creating the cluster with kubeadm"
 
-
-if ! sudo -E kubeadm init --pod-network-cidr=10.244.0.0/16; then
+if ! sudo -E kubeadm init --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors ; then 
+#if ! sudo -E kubeadm init --pod-network-cidr=10.244.0.0/16; then
     echo "Error: Failed to create the cluster with kubeadm"
     exit 1
 fi
@@ -284,4 +257,42 @@ fi
 
 echo "Done"
 
-echo "Completed 0_initial_install script"
+echo "Completed single node cluster setup"
+
+echo "Installing CKO Control cluster"
+
+source 11_launch_chart.sh /tmp/resources/cert-manager-v1.11.0.tgz cko-jetstack-cert-manager /tmp/resources/cert-manager_images.tgz "--namespace cert-manager --create-namespace --version v1.10.0 --set installCRDs=true"
+
+# create ns
+kubectl create ns netop-manager
+
+# create ns
+kubectl create ns netop-manager
+
+source 11_launch_chart.sh /tmp/resources/netop-org-manager-0.9.0.tgz cko-netop-org-manager /tmp/resources/netop-org-manager_images.tgz "--namespace  netop-manager --create-namespace --version 0.9.0 -f my_values.yaml"
+
+set_docker_config() {
+  config_file=~/.docker/config.json
+  if [ ! -f "$config_file" ]; then
+    echo '{"proxies": {"default": {"http_proxy": "", "https_proxy": "", "no_proxy": ""}}}' > "$config_file"
+  fi
+  jq '.proxies.default |= . + {"http_proxy": "'"$http_proxy"'", "https_proxy": "'"$https_proxy"'", "no_proxy": "'"$no_proxy"'"}' "$config_file" > "$config_file.tmp" && mv "$config_file.tmp" "$config_file"
+}
+
+
+
+
+check_proxy_vars() {
+  if [ -n "$http_proxy" ] || [ -n "$https_proxy" ]; then
+    return 0 # true
+  else
+    return 1 # false
+  fi
+}
+
+# usage example
+if check_proxy_vars; then
+  echo "A proxy is set"
+else
+  echo "No proxy is set"
+fi
