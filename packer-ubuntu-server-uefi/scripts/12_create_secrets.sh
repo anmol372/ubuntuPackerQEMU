@@ -12,6 +12,7 @@ kubectl create secret generic cko-config -n netop-manager \
 --from-literal=token=$GITHUB_PAT \
 --from-literal=user=$GIT_USER \
 --from-literal=email=$GIT_EMAIL \
+--from-literal=systemid=$SYSTEM_ID \
 --from-literal=http_proxy=$HTTP_PROXY \
 --from-literal=https_proxy=$HTTPS_PROXY \
 --from-literal=no_proxy=$NO_PROXY,10.96.0.1,.netop-manager.svc,.svc,.cluster.local,localhost,127.0.0.1,10.96.0.0/16,10.244.0.0/16,control-cluster-control-plane,.svc,.svc.cluster,.svc.cluster.local
