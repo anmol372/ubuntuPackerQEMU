@@ -2,23 +2,6 @@
 
 set -xe
 
-DEBIAN_FRONTEND=noninteractive
-
-#cluster
-pod_cidr=10.244.0.0/16
-ok,api_server=$(ip addr show | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | tr '\n' ',' | sed 's/,$//')
-HOSTNAME=$(hostname)
-
-
-# Set proxy
-
-echo "Checking if proxy is set"
-echo "http_proxy=<ip:port>" | sudo tee -a /etc/environment
-echo "https_proxy=<ip:port>" | sudo tee -a /etc/environment
-echo "no_proxy=$api_server,$pod_cidr,<no_proxy>" | sudo tee -a /etc/environment
-source /etc/environment
-
-
 # To be defined by the user
 REPO="https://github.com/test/example"
 DIR="demo-cluster"
@@ -27,45 +10,35 @@ GITHUB_PAT="dfkjdsanfknjsdakfndsafckajsnflnas"
 GIT_USER="networkoperator-gittest"
 GIT_EMAIL="test@cisco.com"
 SYSTEM_ID="sysID"
-HTTP_PROXY=$http_proxy
-HTTPS_PROXY=$https_proxy
-NO_PROXY=$no_proxy
+#delete proxy variables, if no proxy is present
+HTTP_PROXY=<ip:port>
+HTTPS_PROXY=<ip:port>
+NO_PROXY=<no-proxy>
 VALUES_YAML_CKO=/path/to/values.yaml
 
-set_docker_config() {
-  if check_proxy_vars; then
-    config_file=~/.docker/config.json
-    if [ ! -f "$config_file" ]; then
-      echo '{"proxies": {"default": {"http_proxy": "", "https_proxy": "", "no_proxy": ""}}}' > "$config_file"
-    fi
-    jq '.proxies.default |= . + {"http_proxy": "'"$http_proxy"'", "https_proxy": "'"$https_proxy"'", "no_proxy": "'"$no_proxy"'"}' "$config_file" > "$config_file.tmp" && mv "$config_file.tmp" "$config_file"
-  fi
-}
+#cluster
+pod_cidr=10.244.0.0/16
+api_server=$(ip addr show | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | tr '\n' ',' | sed 's/,$//')
+HOSTNAME=$(hostname)
 
-
+# Set proxy
 check_proxy_vars() {
-  if [ -n "$http_proxy" ] || [ -n "$https_proxy" ]; then
+  if [ -n "$HTTP_PROXY" ] || [ -n "$HTTPS_PROXY" ]; then
     return 0 # true
   else
     return 1 # false
   fi
 }
 
-run_chart() {
-  local images=$1
-  local release_name=$2
-  local chart_name=$3
-  local args=$4
+if check_proxy_vars; then
+   export http_proxy=$HTTP_PROXY
+   export https_proxy=$HTTPS_PROXY
+   export no_proxy=$api_server,$pod_cidr,$NO_PROXY
+fi
 
-  docker load -i $images
-  helm template $release_name $chart_name $args > $release_name.yaml
-  sed -i'' -e 's/imagePullPolicy:.*/imagePullPolicy: IfNotPresent/g' $release_name.yaml
-  rm $release_name.yaml-e
-  helm install --name $release_name -f chart.yaml $chart_name
-}
 
 check_secret_vars() {
-  if [ -n "$REPO" ] || [ -n "$DIR" ] || [ -n "$BRANCH_NAME" ] || [ -n "$GITHUB_PAT" ] || [ -n "$GIT_USER" ] || [ -n "$GIT_EMAIL" ]; then
+  if [ -n "$REPO" ] || [ -n "$DIR" ] || [ -n "$BRANCH_NAME" ] || [ -n "$GITHUB_PAT" ] || [ -n "$GIT_USER" ] || [ -n "$GIT_EMAIL" ] | [ -n "$SYSTEM_ID" ]; then
     return 0 # true
   else
     echo "some or all env variables required to configure cko resources are missing"
@@ -119,6 +92,8 @@ sudo -E apt install -y cri-o cri-o-runc cri-tools
 mkdir -p /etc/systemd/system/crio.service.d/
 mkdir -p /etc/systemd/system/kubelet.service.d/
 mkdir -p /etc/systemd/system/crio.service.d/
+
+sudo rm /etc/cni/net.d/100-crio-bridge.conf
 
 line="default_capabilities = [\"CHOWN\",\"DAC_OVERRIDE\",\"FSETID\",\"FOWNER\",\"SETGID\",\"SETUID\",\"SETPCAP\",\"NET_BIND_SERVICE\",\"KILL\",\"NET_RAW\",]"
 file="/etc/crio/crio.conf"
@@ -245,10 +220,10 @@ echo "Done"
 #echo "Installing a CNI plugin"
 
 # Install CNI plugin
-#if ! kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml; then
-#    echo "Error: Failed to install CNI plugin"
-#    exit 1
-#fi
+if ! sudo -E kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml; then
+    echo "Error: Failed to install CNI plugin"
+    exit 1
+fi
 
 echo "Done"
 
@@ -275,8 +250,10 @@ if check_secret_vars; then
     --namespace cert-manager \
     --create-namespace \
     --version v1.10.0 \
-    --set installCRDs=true
+    --set installCRDs=true \
     --wait
+
+    sudo -E kubectl create ns netop-manager
 
     sudo -E kubectl create secret generic cko-config -n netop-manager \
     --from-literal=repo=$REPO \
@@ -297,7 +274,7 @@ if check_secret_vars; then
     --from-literal=username=$GIT_USER \
     --from-literal=proxy=$HTTP_PROXY
 
-    sudo -E kubectl label secret cko-argo -n netop-manager 'argocd.argoproj.io/secret-type'=$REPO
+    sudo -E kubectl label secret cko-argo -n netop-manager 'argocd.argoproj.io/secret-type'=repository
 
 
     sudo -E helm repo add cko https://noironetworks.github.io/netop-helm
