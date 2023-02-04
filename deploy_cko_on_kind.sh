@@ -3,8 +3,11 @@
 set -xe
 
 # Usage:
-# ./deploy_cko_on_kind.sh --repo https://github.com/test/example372 --dir demo-cluster-372 --branch test372 --github_pat dfkjdsanfknjsdakfndsafck372372372372ajsnflnas --git_user networkoperator-gittest372 --git_email test372@cisco.com --system_id sysID372 --http_proxy http://example.proxy.com:port --https_proxy http://example.proxy.com:port --no-proxy localhost,127.0.0.1
+# ./deploy_cko_on_kind.sh --repo https://github.com/test/example372 --dir demo-cluster-372 --branch test372 --github_pat dfkjdsanfknjsdakfndsafck372372372372ajsnflnas --git_user networkoperator-gittest372 --git_email test372@cisco.com --system_id sysID372 --http_proxy http://example.proxy.com:port --https_proxy http://example.proxy.com:port --no_proxy localhost,127.0.0.1
 # ./deploy_cko_on_kind.sh -r https://github.com/cisco/example -d demo-cluster -b test -p dfkjdsanfknjsdakfndsafck372372372372ajsnflnas -u networkoperator-gittest -e test@cisco.com -s sysID -hp http://example.proxy.com:port -hsp http://example.proxy.com:port -np localhost,127.0.0.1
+
+
+sudo -E echo "Installing CKO Control Cluster..."
 
 # Defaults
 REPO="https://github.com/test/example"
@@ -258,11 +261,11 @@ fi
 
 echo "Set docker proxy"
 # Create required dirs
-mkdir -p /etc/systemd/system/docker.service.d
+sudo -E mkdir -p /etc/systemd/system/docker.service.d
 
 # add proxy
 if check_proxy_vars; then
-    sudo -E echo -e "[Service]\nEnvironment=HTTP_PROXY=${http_proxy}\nEnvironment=HTTPS_PROXY=${https_proxy}\nEnvironment=NO_PROXY=${no_proxy}" > /etc/systemd/system/docker.service.d/http-proxy.conf
+    echo -e "[Service]\nEnvironment=HTTP_PROXY=${http_proxy}\nEnvironment=HTTPS_PROXY=${https_proxy}\nEnvironment=NO_PROXY=${no_proxy}" |sudo tee -a /etc/systemd/system/docker.service.d/http-proxy.conf > /dev/null
 fi
 
 sudo -E systemctl daemon-reload
@@ -310,20 +313,16 @@ echo "Done"
 
 # Step 7: Create the cluster with kind
 
-kind create cluster --name control-cluster
+sudo -E kind create cluster --name control-cluster
+sudo chmod +r /home/cko/.kube/config
 
-#sudo -E systemctl daemon-reload
-#sudo -E systemctl restart docker
-#sudo -E systemctl restart kubelet
 
 # Step 8: Untaint node
 echo "Untainting node"
 
 # Untaint node
-if ! kubectl taint nodes --all node.kubernetes.io/not-ready-; then
-    echo "Error: Failed to untaint node"
-    exit 1
-fi
+kubectl taint nodes --all node.kubernetes.io/not-ready- || true
+kubectl taint nodes --all node-role.kubernetes.io/control-plane- || true
 
 echo "Done"
 
@@ -332,7 +331,7 @@ echo "Done"
 echo "Installing helm"
 
 # Download and install helm
-if ! curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash; then
+if ! sudo -E curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash; then
     echo "Error: Failed to install helm"
     exit 1
 fi
@@ -356,9 +355,9 @@ if check_secret_vars; then
     --set installCRDs=true \
     --wait
 
-    sudo -E kubectl create ns netop-manager
+    kubectl create ns netop-manager
 
-    sudo -E kubectl create secret generic cko-config -n netop-manager \
+    kubectl create secret generic cko-config -n netop-manager \
     --from-literal=repo=$REPO \
     --from-literal=dir=$DIR \
     --from-literal=branch=$BRANCH_NAME \
@@ -370,14 +369,14 @@ if check_secret_vars; then
     --from-literal=https_proxy=$HTTPS_PROXY \
     --from-literal=no_proxy=$NO_PROXY,10.96.0.1,.netop-manager.svc,.svc,.cluster.local,localhost,127.0.0.1,10.96.0.0/16,10.244.0.0/16,control-cluster-control-plane,.svc,.svc.cluster,.svc.cluster.local
 
-    sudo -E kubectl create secret generic cko-argo -n netop-manager \
+    kubectl create secret generic cko-argo -n netop-manager \
     --from-literal=url=$REPO \
     --from-literal=type=git  \
     --from-literal=password=$GIT_PAT \
     --from-literal=username=$GIT_USER \
     --from-literal=proxy=$HTTP_PROXY
 
-    sudo -E kubectl label secret cko-argo -n netop-manager 'argocd.argoproj.io/secret-type'=repository
+    kubectl label secret cko-argo -n netop-manager 'argocd.argoproj.io/secret-type'=repository
 
     sudo -E helm repo add cko https://noironetworks.github.io/netop-helm
     sudo -E helm repo update
@@ -388,3 +387,5 @@ if check_secret_vars; then
 else
     echo "some or all required variables to configure cko resources are missing"
 fi
+
+echo "You can now use your cluster with:\n\nkubectl cluster-info --context kind-control-cluster\n\n"
