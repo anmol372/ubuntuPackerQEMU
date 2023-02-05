@@ -347,13 +347,9 @@ echo "Installing CKO Control cluster"
 if check_secret_vars; then
     sudo -E helm repo add jetstack https://charts.jetstack.io
     sudo -E helm repo update
-    sudo -E helm install \
-    cert-manager jetstack/cert-manager \
-    --namespace cert-manager \
-    --create-namespace \
-    --version v1.10.0 \
-    --set installCRDs=true \
-    --wait
+    if ! sudo -E helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.10.0 --set installCRDs=true --wait; then
+      echo "Helm timed out waiting for condition. Please check if cert-manager resources are running"
+    fi
 
     kubectl create ns netop-manager
 
