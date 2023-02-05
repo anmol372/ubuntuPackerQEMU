@@ -379,7 +379,9 @@ if check_secret_vars; then
     
     # Write values.yaml
     echo "$values_yaml" | sudo -E tee values.yaml
-    sudo -E helm install netop-org-manager cko/netop-org-manager -n netop-manager --create-namespace --version 0.9.0 -f $(pwd)/values.yaml --wait
+    if ! sudo -E helm install netop-org-manager cko/netop-org-manager -n netop-manager --create-namespace --version 0.9.0 -f $(pwd)/values.yaml --wait; then
+     echo "Helm timed out waiting for condition. Please check that netop-org-manager resources are running"
+    fi
 else
     echo "some or all required variables to configure cko resources are missing"
 fi
